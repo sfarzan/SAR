@@ -1,0 +1,19 @@
+Install raspi-config:
+
+	sudo apt update
+	sudo apt upgrade
+	sudo apt-get install raspi-config
+
+Open raspi-config:
+
+	sudo raspi-config
+
+Go to the Interface Option and then click Serial Port.
+
+	-Select No to disable serial login shell.
+	-Select Yes to enable the serial interface.
+	-Click Finish and restart the RPi.
+
+Open the firmware boot configuration file in the nano editor on RaPi:
+
+	sudo nano /boot/firmware/config.txt
