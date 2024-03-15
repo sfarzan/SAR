@@ -1,0 +1,3 @@
+[submodule "Simulation/mavlink-router"]
+	path = Simulation/mavlink-router
+	url = https://github.com/mavlink-router/mavlink-router.git
