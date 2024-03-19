@@ -1,0 +1,18 @@
+void setup() {
+  Serial.begin(115200);
+  Serial.println("AT");
+
+  while (!Serial.available()){
+    Serial.println("AT+SEND=0,5,HELLO");
+    
+    // Serial.println("Not reading anything");
+    delay(1000);
+  }
+
+  String response = Serial.readString();
+  Serial.println(response);
+  //Serial.println("AT+ADDRESS=0");
+
+}
+
+void loop(){}
