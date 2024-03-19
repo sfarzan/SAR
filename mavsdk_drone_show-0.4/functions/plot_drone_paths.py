@@ -53,7 +53,7 @@ def plot_drone_paths(skybrush_dir, processed_dir, show_plots=True):
                   handler_map={tuple: HandlerTuple(ndivide=None)})
 
         # Save the plot as an image
-        plt.savefig('shapes/swarm/plots/' + file.split('.')[0] + '.png') 
+        plt.savefig('C:/Users/rusha/OneDrive/Documents/GitHub/SAR/mavsdk_drone_show-0.4/shapes/swarm/plots/' + file.split('.')[0] + '.png') 
 
         # Show the plot
         if show_plots:
@@ -96,7 +96,7 @@ def plot_drone_paths(skybrush_dir, processed_dir, show_plots=True):
                   handler_map={tuple: HandlerTuple(ndivide=None)})
 
     # Save the plot as an image
-    plt.savefig('shapes/swarm/plots/all_drones.png')
+    plt.savefig('C:/Users/rusha/OneDrive/Documents/GitHub/SAR/mavsdk_drone_show-0.4/shapes/swarm/plots/all_drones.png')
 
     # Show the plot
     if show_plots:

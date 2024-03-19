@@ -5,8 +5,8 @@ from functions.process_drone_files import process_drone_files
 from functions.update_config_file import update_config_file
 
 # Process the drone files and output the processed data to another directory
-skybrush_dir = 'C:\Users\rusha\OneDrive\Documents\GitHub\SAR\mavsdk_drone_show-0.4\shapes\swarm\skybrush'
-processed_dir = 'C:\Users\rusha\OneDrive\Documents\GitHub\SAR\mavsdk_drone_show-0.4\shapes\swarm\processed'
+skybrush_dir = 'C:/Users/rusha/OneDrive/Documents/GitHub/SAR/mavsdk_drone_show-0.5/shapes/swarm/skybrush'
+processed_dir = 'C:/Users/rusha/OneDrive/Documents/GitHub/SAR/mavsdk_drone_show-0.5/shapes/swarm/processed'
 method = 'cubic'
 dt = 0.05
 SHOW_PLOTS = True
