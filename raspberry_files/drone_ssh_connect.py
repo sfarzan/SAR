@@ -21,7 +21,7 @@ def ssh_into_raspberry_pi(drone_ID):
     elif drone_ID == "Drone2":
         raspberry_pi_ip = "10.40.126.55"
         username = "ander"
-        password = "drone2"
+        password = "Drone2"
     elif drone_ID == "Drone3":
         username = "wyattcolburn"
         raspberry_pi_ip = "10.40.127.129"
