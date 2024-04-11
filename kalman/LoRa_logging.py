@@ -41,12 +41,13 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     raw_array = list(data_points.values())
     rssi_array = [0] * DATA_ARRAY_SIZE
     variance_array = [0] * DATA_ARRAY_SIZE
-
+    kalman_dict = {}
     for i in range(len(data_points)):
         rssi_array[i] = kf.filter(raw_array[i])
         variance_array[i] = kf.get_cov()
+        kalman_dict[rssi_array[i]] = variance_array[i]
         print("Data point", raw_array[i], "filtered value", rssi_array[i], "variance", variance_array[i])
-
+    write_to_csv(kalman_dict)
     min_variance_index = min(enumerate(variance_array), key=lambda x: x[1])[0]
     return rssi_array[min_variance_index], variance_array[min_variance_index]
 
