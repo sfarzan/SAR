@@ -2,12 +2,14 @@ import serial
 from kalman import KalmanFilter
 import pandas as pd
 from datetime import datetime
-
+import csv
 
 
 
 filepath = ''
 DATA_ARRAY_SIZE = 9
+CSV_FILEPATH = 'data.csv'
+
 def collection():
    # takes X amount of samples and puts them into an array to later be filtered
     
@@ -24,9 +26,10 @@ def collection():
             time_stamp = datetime.now().strftime("%m/%d/%H:%M:%S")
             data_array[time_stamp] = data_message_filtered[-2]
             samples += 1
-            print(f"NUm of samples {samples} > {DATA_ARRAY_SIZE}")
+            print(f"Num of samples {samples} > {DATA_ARRAY_SIZE}")
         else:
             print(data_array)
+            write_to_csv(data_array)
             return data_array
 
 
@@ -47,18 +50,14 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     min_variance_index = min(enumerate(variance_array), key=lambda x: x[1])[0]
     return rssi_array[min_variance_index], variance_array[min_variance_index]
 
-    
+def write_to_csv(data):
+    with open(CSV_FILENAME, 'w', newline='') as csvfile:
+        fieldnames = ['Time', 'Value']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-def exportExcel(filepath, rssi_array, variance_array):
-    # Create a DataFrame with timestamps, RSSI values, and variances
-    df = pd.DataFrame({
-        'Timestamp': [datetime.now()] * len(rssi_array),
-        'RSSI': rssi_array,
-        'Variance': variance_array
-    })
-
-    # Export DataFrame to Excel
-    df.to_excel(filepath, index=False)
+        writer.writeheader()
+        for time_stamp, value in data.items():
+            writer.writerow({'Time': time_stamp, 'Value': value})
 
 # Example usage
 # lora_init()
