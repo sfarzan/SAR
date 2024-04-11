@@ -29,7 +29,6 @@ def collection():
             print(f"Num of samples {samples} > {DATA_ARRAY_SIZE}")
         else:
             print(data_array)
-            write_to_csv(data_array)
             return data_array
 
 
