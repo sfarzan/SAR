@@ -18,10 +18,10 @@ def collection():
         data_message = ser.readline().decode('utf-8').strip() # this is the message
         while len(data_array) != DATA_ARRAY_SIZE:
             # +RCV=50,5,HELLO,-43,47 this is what sample line  will look RSSI_Val
-            data_message = data_message.split(',')
-            print(data_message)
-            time_stamp = datetime.now()
-            data_array[time_stamp] = data_message[-2]
+            data_message_filtered = data_message.split(',')
+            print(data_message_filtered)
+            time_stamp = datetime.now().strftime("%m/%d/%H:%M:%S")
+            data_array[time_stamp] = data_message_filtered[-2]
             
         else:
             print(data_array)
