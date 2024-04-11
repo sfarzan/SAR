@@ -57,7 +57,9 @@ def exportExcel(filepath, rssi_array, variance_array):
     df.to_excel(filepath, index=False)
 
 # Example usage
-lora_init()
-data_points = collection()
-kalman_filter(data_points, .008, .1)
-exportExcel('data.xlsx', rssi_array, variance_array)
+# lora_init()
+# data_points = collection()
+# kalman_filter(data_points, .008, .1)
+# exportExcel('data.xlsx', rssi_array, variance_array)
+
+collection()
