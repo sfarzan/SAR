@@ -38,12 +38,12 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     # filtering portion takes data from collection, and applies filter
     # RSSI measurement with the lowest var, is the RSSI value used for heading
     kf = KalmanFilter(process_noise, measurement_noise)
-
+    raw_array = list(data_points.values())
     rssi_array = [0] * DATA_ARRAY_SIZE
     variance_array = [0] * DATA_ARRAY_SIZE
 
     for i in range(len(data_points)):
-        rssi_array[i] = kf.filter(data_points[i])
+        rssi_array[i] = kf.filter(raw_array[i])
         variance_array[i] = kf.get_cov()
         print("Data point", data_points[i], "filtered value", rssi_array[i], "variance", variance_array[i])
 
