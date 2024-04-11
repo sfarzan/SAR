@@ -65,4 +65,5 @@ def write_to_csv(data):
 # kalman_filter(data_points, .008, .1)
 # exportExcel('data.xlsx', rssi_array, variance_array)
 
-collection()
+data_points = collection()
+kalman_filter(data_points, .008, .1)
