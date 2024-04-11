@@ -21,8 +21,10 @@ def collection():
             data_message = data_message.split(',')
             print(data_message)
             time_stamp = datetime.now()
-            data_array[time_stamp] = RSSI_val
+            data_array[time_stamp] = data_message[-2]
+            
         else:
+            print(data_array)
             return data_array
 
 
