@@ -24,7 +24,7 @@ def collection():
             data_message_filtered = data_message.split(',')
             
             time_stamp = datetime.now().strftime("%m/%d/%H:%M:%S")
-            data_array[time_stamp] = int(data_message_filtered[-2])
+            data_array[time_stamp] = int(data_message_filtered[-2]) #was a str-->int
             samples += 1
             print(f"Num of samples {samples} > {DATA_ARRAY_SIZE}")
         else:
