@@ -23,7 +23,8 @@ def collection():
             
             time_stamp = datetime.now().strftime("%m/%d/%H:%M:%S")
             data_array[time_stamp] = data_message_filtered[-2]
-            samples += 1 
+            samples += 1
+            print(f"NUm of samples {samples} > {DATA_ARRAY_SIZE}")
         else:
             print(data_array)
             return data_array
