@@ -51,7 +51,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     return rssi_array[min_variance_index], variance_array[min_variance_index]
 
 def write_to_csv(data):
-    with open(CSV_FILENAME, 'w', newline='') as csvfile:
+    with open(CSV_FILEPATH, 'w', newline='') as csvfile:
         fieldnames = ['Time', 'Value']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
