@@ -50,21 +50,21 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     min_variance_index = min(enumerate(variance_array), key=lambda x: x[1])[0]
     return rssi_array[min_variance_index], variance_array[min_variance_index]
 
-def write_to_csv(original_data, kalman_dict):
+def write_to_csv(original_data, kalman_dict, CSV_FILEPATH):
     with open(CSV_FILEPATH, 'w', newline='') as csvfile:
         fieldnames = ['Time', 'Original Value', 'Kalman Filtered Value', 'Variance']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writeheader()
         for time_stamp, original_value in original_data.items():
-           # kalman_value = kalman_dict.get(original_value, '')  # Get the Kalman filtered value for the original value
-            # variance = kalman_dict.get(original_value, '')  # Get the variance for the original value
-            # kalman_value = next((k for k, v in kalman_dict.items() if v == original_value), '')  # Get the key from kalman_dict where value equals original_value
-            writer.writerow({'Time': time_stamp, 'Original Value': original_value}) # 'Kalman Filtered Value': kalman_value, 'Variance': variance})
-        
-        for key, value in kalman_dict.items():
-            writer.writerow({'Kalman FIltered Value' : key, 'Variance' : value})
-
+            kalman_value = kalman_dict.get(original_value, '')  # Get the Kalman filtered value for the original value
+            variance = kalman_dict.get(original_value, '')  # Get the variance for the original value
+            row_dict = {'Time': time_stamp, 'Original Value': original_value}
+            if kalman_value is not '':
+                row_dict['Kalman Filtered Value'] = kalman_value
+            if variance is not '':
+                row_dict['Variance'] = variance
+            writer.writerow(row_dict)
 # Example usage
 # lora_init()
 # data_points = collection()
