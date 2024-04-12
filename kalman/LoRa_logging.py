@@ -57,16 +57,15 @@ def write_to_csv(original_data, kalman_dict):
         fieldnames = ['Time', 'Original Value', 'Kalman Filtered Value', 'Variance']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        writer.writeheader()
-        for time_stamp, original_value in original_data.items():
+        kf_list = list(kalman_dict.values())
+        var_list = list(kalman_dict.keys())
+        for i, (time_stamp, original_value) in enumerate(original_data.items()):
             # Get the Kalman filtered value from the original data
-            kalman_value = kalman_dict.get(original_value, None)
-            # If Kalman filtered value exists, retrieve its variance from kalman_dict
-            if kalman_value is not None:
-                variance = kalman_dict[kalman_value]
-            else:
-                variance = None
-            writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'Kalman Filtered Value': kalman_value, 'Variance': variance}) 
+            kalman_value = kf_list[i]
+            variance = var_list[i]
+            writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'Kalman Filtered Value': kalman_value, 'Variance': variance})
+
+
 # data_points = collection()
 # kalman_filter(data_points, .008, .1)
 # exportExcel('data.xlsx', rssi_array, variance_array)
