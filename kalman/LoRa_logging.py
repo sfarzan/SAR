@@ -60,10 +60,10 @@ def write_to_csv(original_data, kalman_dict):
            # kalman_value = kalman_dict.get(original_value, '')  # Get the Kalman filtered value for the original value
             # variance = kalman_dict.get(original_value, '')  # Get the variance for the original value
             # kalman_value = next((k for k, v in kalman_dict.items() if v == original_value), '')  # Get the key from kalman_dict where value equals original_value
-            writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'Kalman Filtered Value': kalman_value, 'Variance': variance})
+            writer.writerow({'Time': time_stamp, 'Original Value': original_value}) # 'Kalman Filtered Value': kalman_value, 'Variance': variance})
         
         for key, value in kalman_dict.items():
-            writer.writerow({'KF Val' : key, 'Var' : value})
+            writer.writerow({'Kalman FIltered Value' : key, 'Variance' : value})
 
 # Example usage
 # lora_init()
