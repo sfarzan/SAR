@@ -57,8 +57,10 @@ def write_to_csv(original_data, kalman_dict):
         fieldnames = ['Time', 'Original Value', 'Kalman Filtered Value', 'Variance']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        kf_list = list(kalman_dict.values())
-        var_list = list(kalman_dict.keys())
+        var_list = list(kalman_dict.values())
+        kf_list = list(kalman_dict.keys())
+        print(kf_list)
+
         for i, (time_stamp, original_value) in enumerate(original_data.items()):
             # Get the Kalman filtered value from the original data
             kalman_value = kf_list[i]
