@@ -50,7 +50,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     min_variance_index = min(enumerate(variance_array), key=lambda x: x[1])[0]
     return rssi_array[min_variance_index], variance_array[min_variance_index]
 
-def write_to_csv(original_data, kalman_dict, CSV_FILEPATH):
+def write_to_csv(original_data, kalman_dict):
     with open(CSV_FILEPATH, 'w', newline='') as csvfile:
         fieldnames = ['Time', 'Original Value', 'Kalman Filtered Value', 'Variance']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
