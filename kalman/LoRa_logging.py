@@ -59,16 +59,14 @@ def write_to_csv(original_data, kalman_dict):
 
         writer.writeheader()
         for time_stamp, original_value in original_data.items():
-            kalman_value = kalman_dict.get(original_value, '')  # Get the Kalman filtered value for the original value
-            variance = kalman_dict.get(original_value, '')  # Get the variance for the original value
-            row_dict = {'Time': time_stamp, 'Original Value': original_value}
-
-            
-            row_dict['Kalman Filtered Value'] = kalman_value
-            row_dict['Variance'] = variance
-            writer.writerow(row_dict)
-# Example usage
-# lora_init()
+            # Get the Kalman filtered value from the original data
+            kalman_value = kalman_dict.get(original_value, None)
+            # If Kalman filtered value exists, retrieve its variance from kalman_dict
+            if kalman_value is not None:
+                variance = kalman_dict[kalman_value]
+            else:
+                variance = None
+            writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'Kalman Filtered Value': kalman_value, 'Variance': variance}) 
 # data_points = collection()
 # kalman_filter(data_points, .008, .1)
 # exportExcel('data.xlsx', rssi_array, variance_array)
