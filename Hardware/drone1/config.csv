@@ -1,0 +1,2 @@
+hw_id,pos_id,x,y,ip,mavlink_port,debug_port,gcs_ip,serial_port
+1,1,-17.5,-10.0,172.18.218.35,14551,13541,172.17.0.1,ttyUSB0
