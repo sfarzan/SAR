@@ -1,9 +1,10 @@
+from os import walk
 import serial
 from kalman import KalmanFilter
 import pandas as pd
 from datetime import datetime
 import csv
-
+import math
 
 
 filepath = ''
@@ -67,10 +68,64 @@ def write_to_csv(original_data, kalman_dict):
             variance = var_list[i]
             writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'Kalman Filtered Value': kalman_value, 'Variance': variance})
 
+def rssi_to_meters(RSSI):
+   # d is estimated distance in meters
+   #     n is the calibrated path loss exponent
+   #     A is calibrated received signal strength at 1 meter distance    
+   #     n is calibrated path loss exponent
+   #     x is shadowing factor
+        
+        
+   
+    A = 61 
+    X = 0
+    n = 2.7
+    d = 10**((A - RSSI + X) / (10 * n))
+    return d
+
+def trilateration(drone1_lat, drone1_lon, drone1_rssi, drone2_lat, drone2_lon, drone2_rssi, drone3_lat, drone3_lon, drone3_rssi):
+    # provides GPS estimate, use this and leaders position to generate heading for swarm
+
+    A = 2 * drone2_lat - 2 * drone1_lat
+    B = 2 * drone2_lon - 2 * drone1_lon
+    C = drone1_rssi ** 2 - drone2_rssi ** 2 - drone1_lat ** 2 + drone2_lat ** 2 - drone1_lon ** 2 + drone2_lon ** 2
+    D = 2 * drone3_lat - 2 * drone2_lat
+    E = 2 * drone3_lon - 2 * drone2_lon
+    F = drone2_rssi ** 2 - drone3_rssi ** 2 - drone2_lat ** 2 + drone3_lat ** 2 - drone2_lon ** 2 + drone3_lon ** 2
+    estimate_lat = (C * E - F * B) / (E * A - B * D)
+    estimate_lon = (C * D - A * F) / (B * D - A * E)
+    return estimate_lat, estimate_lon
+
+def heading(drone1_lat, drone1_lon, estimate_lat, estimate_lon):
+    # Convert latitude and longitude from degrees to radians
+    drone1_lat, drone1_lon, estimate_lat, estimate_lon = map(math.radians, [drone1_lat, drone1_lon, estimate_lat, estimate_lon])
+
+    # Calculate the difference in longitude
+    delta_lon = estimate_lon - drone1_lon
+
+    # Calculate the difference in latitude
+    delta_lat = estimate_lat - drone1_lat
+
+    # Calculate the heading in radians
+    heading_rad = math.atan2(math.sin(delta_lat) * math.cos(estimate_lat), math.cos(drone1_lat) * math.sin(estimate_lat) - math.sin(drone1_lat) * math.cos(estimate_lat) * math.cos(delta_lon))
+
+    # Convert the heading from radians to degrees
+    heading_deg = math.degrees(heading_rad)
+
+    return heading_deg
+
+# Example usage
+drone1_lat, drone1_lon = 51.5074, -0.0278
+estimate_lat, estimate_lon = 51.5194, -0.0129
+
+heading_result = heading(drone1_lat, drone1_lon, estimate_lat, estimate_lon)
+print("Heading:", heading_result)
 
 # data_points = collection()
 # kalman_filter(data_points, .008, .1)
 # exportExcel('data.xlsx', rssi_array, variance_array)
 
-data_points = collection()
-kalman_filter(data_points, .008, .1)
+# data_points = collection()
+# kalman_filter(data_points, .008, .1)
+
+print(rssi_to_meters(49))
