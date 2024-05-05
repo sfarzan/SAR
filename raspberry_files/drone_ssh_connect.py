@@ -15,13 +15,13 @@ def ssh_into_raspberry_pi(drone_ID):
     # Prompt user for Raspberry Pi IP address
 
     if drone_ID == "Drone1":
-        raspberry_pi_ip = "10.40.126.73"
+        raspberry_pi_ip = "10.40.127.129"
         username = "sar"
         password = "drone1"
     elif drone_ID == "Drone2":
         raspberry_pi_ip = "10.40.126.55"
         username = "ander"
-        password = "Drone2"
+        password = "drone2"
     elif drone_ID == "Drone3":
         username = "wyattcolburn"
         raspberry_pi_ip = "10.40.127.129"

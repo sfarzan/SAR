@@ -16,7 +16,7 @@ import sys
 def upload_to_raspberry_pi(drone_ID, pi_file_path, local_file_path):
     #Config Depending on drone_ID
     if drone_ID == "Drone1":
-        raspberry_pi_ip = "10.40.126.73"
+        raspberry_pi_ip = "10.40.127.129"
         username = "sar"
         password = "drone1"
     elif drone_ID == "Drone2":

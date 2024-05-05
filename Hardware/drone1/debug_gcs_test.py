@@ -153,6 +153,7 @@ else:
 
 # Mavlink Router Config
 try:
+    mavlink_router_procs = []
     for drone_config in drones:
         Radio_Serial_Port = drone_config['serial_port']
         Radio_UDP_Port = drone_config['debug_port']
@@ -179,6 +180,7 @@ try:
         logging.info(f"Starting MAVLink router with command: {mavlink_router_cmd}")
 
         mavlink_router_process = subprocess.Popen(mavlink_router_cmd, shell=True)
+        mavlink_router_procs.append(mavlink_router_process)
         logging.info("MAVLink router process started")
 
 except Exception as e:
@@ -231,30 +233,36 @@ def handle_telemetry(keep_running, print_telemetry, master):
     """
     while keep_running[0]:
         try:
-            # Receive telemetry data
+            # Receive SAR Comms -> Target Localization
             msg = master.recv_match()
             if msg and msg.get_type() == 'STATUSTEXT':
-                data = msg.text
+                print(f"ID: {msg.get_srcSystem} RSSI: {msg.text}")
 
-                # If received data is not of correct size, log the error and continue
-                if len(data) != telem_packet_size:
-                    logger.error(f"Received packet of incorrect size. Expected {telem_packet_size}, got {len(data)}.")
-                    continue
 
-                # Decode the data
-                telemetry_data = struct.unpack(telem_struct_fmt, data)
-                header, terminator = telemetry_data[0], telemetry_data[-1]
+            # Receive telemetry data -> Agent Localization
+            if msg and msg.get_type() == 'UTM_GLOBAL_POSITION':
+                print(f"ID: {msg.get_srcSystem()} LAT: {msg.lat} LON: {msg.lon} ALT: {msg.alt}")
+                print(f"VE: {msg.vx} VN: {msg.vy} VD: {msg.vz}")
 
-                # If header or terminator are not as expected, log the error and continue
-                if header != 77 or terminator != 88:
-                    logger.error("Invalid header or terminator received in telemetry data.")
-                    continue
+                # # If received data is not of correct size, log the error and continue
+                # if len(data) != telem_packet_size:
+                #     logger.error(f"Received packet of incorrect size. Expected {telem_packet_size}, got {len(data)}.")
+                #     continue
 
-                # If the print_telemetry flag is True, print the decoded data
-                if print_telemetry[0]:
-                    hw_id, pos_id, state, mission, trigger_time, position_lat, position_long, position_alt, velocity_north, velocity_east, velocity_down, yaw, battery_voltage, follow_mode, telemetry_update_time = telemetry_data[1:-1]
-                    # Debug log with all details
-                    logger.info(f"Received telemetry at {telemetry_update_time}: Header={header}, HW_ID={hw_id}, Pos_ID={pos_id}, State={State(state).name}, Mission={Mission(mission).name}, Trigger Time={trigger_time}, Position Lat={position_lat}, Position Long={position_long}, Position Alt={position_alt:.1f}, Velocity North={velocity_north:.1f}, Velocity East={velocity_east:.1f}, Velocity Down={velocity_down:.1f}, Yaw={yaw:.1f}, Battery Voltage={battery_voltage:.1f}, Follow Mode={follow_mode}, Terminator={terminator}")
+                # # Decode the data
+                # telemetry_data = struct.unpack(telem_struct_fmt, data)
+                # header, terminator = telemetry_data[0], telemetry_data[-1]
+
+                # # If header or terminator are not as expected, log the error and continue
+                # if header != 77 or terminator != 88:
+                #     logger.error("Invalid header or terminator received in telemetry data.")
+                #     continue
+
+                # # If the print_telemetry flag is True, print the decoded data
+                # if print_telemetry[0]:
+                #     hw_id, pos_id, state, mission, trigger_time, position_lat, position_long, position_alt, velocity_north, velocity_east, velocity_down, yaw, battery_voltage, follow_mode, telemetry_update_time = telemetry_data[1:-1]
+                #     # Debug log with all details
+                #     logger.info(f"Received telemetry at {telemetry_update_time}: Header={header}, HW_ID={hw_id}, Pos_ID={pos_id}, State={State(state).name}, Mission={Mission(mission).name}, Trigger Time={trigger_time}, Position Lat={position_lat}, Position Long={position_long}, Position Alt={position_alt:.1f}, Velocity North={velocity_north:.1f}, Velocity East={velocity_east:.1f}, Velocity Down={velocity_down:.1f}, Yaw={yaw:.1f}, Battery Voltage={battery_voltage:.1f}, Follow Mode={follow_mode}, Terminator={terminator}")
                 
         except (OSError, struct.error) as e:
             # If there is an OSError or an error in unpacking the data, log the error and break the loop
@@ -290,7 +298,7 @@ try:
 
         # Pymavlink Connection
         try:
-            master = mavutil.mavlink_connection(f"udp:localhost:{drone_config['debug_port']}")
+            master = mavutil.mavlink_connection(f"udp:localhost:{drone_config['debug_port']}", source_system=3)
         except Exception as e:
             logging.error(f"An error occured Pymavlink Initialize: {e}")
 
