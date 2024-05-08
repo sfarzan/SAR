@@ -60,6 +60,10 @@
         Offboard follow update interval.
     """
 
+# The goal is so add packet space, so I can add the RSSI Value
+# RSSI Values is -XY, three bytes, variance, is probably 8 bytes 
+# because it is FP, I could make it a number 32bit int, and 
+# then divide later
 import struct
 import glob
 import os
@@ -125,8 +129,9 @@ class Params():
     broadcast_mode = True  # Set to True for broadcast mode, False for unicast mode
 
     # Packet formats
-    telem_struct_fmt = '=BHHBBIddddddddBIB'  # Telemetry packet format
-    command_struct_fmt = '=B B B B B I B'  # Command packet format
+    telem_struct_fmt = '=BHHBBIddddddddBIB'  # Telemetry packet format, H short integer, 
+    # the ds mean 64 bytes, each d is 8 bytes, IB equals 5 bytes
+    command_struct_fmt = '=B B B B B I B'  # Command packet format, I means uint32_t, B means byte
 
     # Packet sizes
     telem_packet_size = struct.calcsize(telem_struct_fmt)  # Size of telemetry packet

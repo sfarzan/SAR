@@ -15,7 +15,7 @@ def ssh_into_raspberry_pi(drone_ID):
     # Prompt user for Raspberry Pi IP address
 
     if drone_ID == "Drone1":
-        raspberry_pi_ip = "10.40.126.73"
+        raspberry_pi_ip = "10.40.124.250"
         username = "sar"
         password = "drone1"
     elif drone_ID == "Drone2":
@@ -24,8 +24,9 @@ def ssh_into_raspberry_pi(drone_ID):
         password = "drone2"
     elif drone_ID == "Drone3":
         username = "sar"
-        raspberry_pi_ip = "10.40.127.129"
-        password = "drone1"
+        raspberry_pi_ip = "10.40.126.55"
+        #raspberry_pi_ip = "172.20.10.10"
+        password = "Drone3"
     else:
         print("[ERROR] Unrecognized Drone ID: Enter either Drone1, Drone2 or Drone3")
         return

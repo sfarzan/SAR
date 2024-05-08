@@ -11,6 +11,12 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from src.drone_config import DroneConfig 
 
+# The goal is so add packet space, so I can add the RSSI Value
+# RSSI Values is -XY, three bytes, variance, is probably 8 bytes 
+# because it is FP, I could make it a number 32bit int, and 
+# then divide later
+
+
 class DroneCommunicator:
     def __init__(self, drone_config, params, drones):
         self.drone_config = drone_config
