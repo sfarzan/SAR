@@ -8,7 +8,7 @@ import math
 import numpy as np
 
 filepath = ''
-DATA_ARRAY_SIZE = 15 # num samples per powLevel
+DATA_ARRAY_SIZE = 3 # num samples per powLevel
 NUM_POW_LEVELS = 15 #0-14 db scale from receiver
 
 
@@ -118,8 +118,8 @@ def simpleCSV(data_dict):
         for key in data_dict:
             powLevel = key
             for dataCounter in range(DATA_ARRAY_SIZE):
-                rssiVal = data_dict[key][0]
-                timeStamp = data_dict[key][1]
+                rssiVal = data_dict[key][0][dataCounter]
+                timeStamp = data_dict[key][1][dataCounter]
                 writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal})
 
                 
