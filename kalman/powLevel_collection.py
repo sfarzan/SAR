@@ -9,11 +9,11 @@ import math
 import numpy as np
 
 filepath = ''
-DATA_ARRAY_SIZE = 1 # num samples per powLevel
-NUM_POW_LEVELS = 15 #0-14 db scale from receiver
+DATA_ARRAY_SIZE = 4 # num samples per powLevel
+NUM_POW_LEVELS = 16 #0-14 db scale from receiver
 
 
-CSV_FILEPATH = 'test2.csv'
+CSV_FILEPATH = 'test3.csv'
 
 def collection():
     """"
@@ -116,7 +116,7 @@ def simpleCSV(data_dict):
         writer.writeheader()
 
         # sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
-        for i in range(0, 14):
+        for i in range(0, 15):
             if i < 10:
                 key = "powLevel0{}".format(i)
                 powLevel = key
