@@ -86,8 +86,9 @@ def kalman_filter(data_points, process_noise, measurement_noise):
         """
         raw_array = list(data_points[key][0])
         for i in range(len(raw_array)):
+            print("i val :", i, "compared to", len(raw_array))
             kalman_dict[key][0] = kf.filter(raw_array[i])
-            kalman_dict[key][1] - kf.get_cov()
+            kalman_dict[key][1] = kf.get_cov()
         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
 
         return data_points, kalman_dict
