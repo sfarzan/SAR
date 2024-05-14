@@ -115,9 +115,12 @@ def simpleCSV(data_dict):
         writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
         writer.writeheader()
 
-        sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
-        for key in sorted_keys:
-            powLevel = key
+        # sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
+        for i in range(0, 14):
+            if i < 10:
+                key = "powLevel0{}".format(i)
+            else: 
+                key = "powLevel{}".format(i)
             for dataCounter in range(DATA_ARRAY_SIZE - 1):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
