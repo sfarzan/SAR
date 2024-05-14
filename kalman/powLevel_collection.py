@@ -47,14 +47,14 @@ def collection():
                 first_powLevel = powLevel 
                 print("first powerLevel: ", first_powLevel) 
 
-            if (powLevel == first_powLevel) and (len(data_array.keys())== NUM_POW_LEVELS) and (len(data_array[first_powLevel][0]) == DATA_ARRAY_SIZE):
+            if (len(data_array.keys())== NUM_POW_LEVELS) and (len(data_array[first_powLevel][0]) == DATA_ARRAY_SIZE):
                 # if we are back at first_powLevel and previous powLevel is full 
                 print(data_array)
 
                 return data_array
 
             if powLevel in data_array:
-                
+                 
                 data_array[powLevel][0].append(rssiVal)
                 data_array[powLevel][1].append(timeStamp)
                 print("len current list", len(data_array[powLevel][0]))
@@ -86,9 +86,15 @@ def kalman_filter(data_points, process_noise, measurement_noise):
         """
         raw_array = list(data_points[key][0])
         for i in range(len(raw_array)):
-            print("i val :", i, "compared to", len(raw_array))
-            kalman_dict[key][0].append(kf.filter(raw_array[i]))
-            kalman_dict[key][1].append(kf.get_cov())
+            if key in kalman_dict:
+
+                print("i val :", i, "compared to", len(raw_array))
+                kalman_dict[key][0].append(kf.filter(raw_array[i]))
+                kalman_dict[key][1].append(kf.get_cov())
+            else:
+                kalman_dict[key] = [[],[]]
+                kalman_dict[key][0].append(kf,filter(raw_array[i]))
+                kalman_dict[key][1].append(kf.get_cov())
         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
 
         return data_points, kalman_dict
