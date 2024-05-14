@@ -57,7 +57,7 @@ def collection():
                  
                 data_array[powLevel][0].append(rssiVal)
                 data_array[powLevel][1].append(timeStamp)
-                print("len current list", len(data_array[powLevel][0]))
+                print("len current list", len(data_array[powLevel][0]), powLevel)
             else:
                 print("new powLevel: ", powLevel)
                 data_array[powLevel] = [[],[]]
