@@ -1,4 +1,5 @@
 from os import walk
+from scipy.sparse import data
 import serial
 from kalman import KalmanFilter
 import pandas as pd
@@ -8,7 +9,7 @@ import math
 import numpy as np
 
 filepath = ''
-DATA_ARRAY_SIZE = 3 # num samples per powLevel
+DATA_ARRAY_SIZE = 1 # num samples per powLevel
 NUM_POW_LEVELS = 15 #0-14 db scale from receiver
 
 
@@ -83,7 +84,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
         data_points = {powLevel: [kf_rssi], [variance]}
 
         """
-        raw_array = list(data_points[key].values())
+        raw_array = list(data_points[key][0].values())
         for i in range(len(raw_array)):
             kalman_dict[key][0] = kf.filter(raw_array[i])
             kalman_dict[key][1] - kf.get_cov()
@@ -117,7 +118,8 @@ def simpleCSV(data_dict):
         sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
         for key in sorted_keys:
             powLevel = key
-            for dataCounter in range(DATA_ARRAY_SIZE):
+            for dataCounter in range(DATA_ARRAY_SIZE - 1):
+                print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
                 writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal})
