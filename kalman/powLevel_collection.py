@@ -47,7 +47,7 @@ def collection():
                 first_powLevel = powLevel 
                 print("first powerLevel: ", first_powLevel) 
 
-            if (powLevel == first_powLevel) and (len(data_array.keys())== NUM_POW_LEVELS):
+            if (powLevel == first_powLevel) and (len(data_array.keys())== NUM_POW_LEVELS) and (len(data_array[first_powLevel][0]) == DATA_ARRAY_SIZE):
                 # if we are back at first_powLevel and previous powLevel is full 
                 print(data_array)
 
@@ -116,7 +116,7 @@ def simpleCSV(data_dict):
         writer.writeheader()
 
         # sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
-        for i in range(0, 15):
+        for i in range(0, 16):
             if i < 10:
                 key = "powLevel0{}".format(i)
                 powLevel = key
