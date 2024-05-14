@@ -72,7 +72,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     # RSSI measurement with the lowest var, is the RSSI value used for heading
     
     kalman_dict = {}
-
+    print(data_points.keys())
     for key in data_points.keys():
 
         kf = KalmanFilter(process_noise, measurement_noise)
