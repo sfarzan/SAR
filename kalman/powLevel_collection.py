@@ -117,9 +117,9 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     min_variance_index = min(enumerate(variance_array), key=lambda x: x[1])[0]
     return rssi_array[min_variance_index], variance_array[min_variance_index]
     """
-def simpleCSV(data_dict):
+def simpleCSV(data_dict, kalman_dict):
     with open(CSV_FILEPATH, 'w', newline='') as csvfile:
-        fieldnames = ['timeStamp', 'powLevel', 'rssi']
+        fieldnames = ['timeStamp', 'powLevel', 'rssi', 'KF', 'VAR']
         writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
         writer.writeheader()
 
@@ -135,7 +135,9 @@ def simpleCSV(data_dict):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
-                writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal})
+                kf = kalman_dict[key][0][dataCounter] 
+                var = kalman_dict[key][1][dataCounter]
+                writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal, 'KF': kf, 'VAR': var})
 
                 
 def write_to_csv(original_data, kalman_dict):
@@ -154,6 +156,5 @@ def write_to_csv(original_data, kalman_dict):
             writer.writerow({'Time': time_stamp, 'Original Value': original_value, 'KF value': kalman_value, 'Variance': variance})
 ## May 7 testing
 data_points = collection()
-simpleCSV(data_points)
-kalman_filter(data_points, .008, .1)
-
+kalman_dict = kalman_filter(data_points, .008, .1)
+simpleCSV(data_points, kalman_dict)
