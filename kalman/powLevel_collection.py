@@ -12,7 +12,7 @@ DATA_ARRAY_SIZE = 3 # num samples per powLevel
 NUM_POW_LEVELS = 15 #0-14 db scale from receiver
 
 
-CSV_FILEPATH = '600cm_outdoor_5dm.csv'
+CSV_FILEPATH = 'test2.csv'
 
 def collection():
     """"
@@ -114,8 +114,8 @@ def simpleCSV(data_dict):
         writer = csv.DictWriter(csvfile, fieldnames = fieldnames)
         writer.writeheader()
 
-
-        for key in data_dict:
+        sorted_keys = sorted(data_dict.keys(), key=lambda x: int(x.split()[1]))
+        for key in sorted_keys:
             powLevel = key
             for dataCounter in range(DATA_ARRAY_SIZE):
                 rssiVal = data_dict[key][0][dataCounter]
