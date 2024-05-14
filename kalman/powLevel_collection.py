@@ -9,7 +9,7 @@ import math
 import numpy as np
 
 filepath = ''
-DATA_ARRAY_SIZE = 4 # num samples per powLevel
+DATA_ARRAY_SIZE = 2 # num samples per powLevel
 NUM_POW_LEVELS = 16 #0-14 db scale from receiver
 
 
@@ -84,7 +84,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
         data_points = {powLevel: [kf_rssi], [variance]}
 
         """
-        raw_array = list(data_points[key][0].values())
+        raw_array = list(data_points[key][0])
         for i in range(len(raw_array)):
             kalman_dict[key][0] = kf.filter(raw_array[i])
             kalman_dict[key][1] - kf.get_cov()
