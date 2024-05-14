@@ -119,9 +119,11 @@ def simpleCSV(data_dict):
         for i in range(0, 14):
             if i < 10:
                 key = "powLevel0{}".format(i)
+                powLevel = key
             else: 
                 key = "powLevel{}".format(i)
-            for dataCounter in range(DATA_ARRAY_SIZE - 1):
+                powLevel = key
+            for dataCounter in range(len(data_dict[key][1])):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
