@@ -66,39 +66,52 @@ def collection():
 
 
 
+# def kalman_filter(data_points, process_noise, measurement_noise):
+#     
+#     # filtering portion takes data from collection, and applies filter
+#     # RSSI measurement with the lowest var, is the RSSI value used for heading
+#     
+#     kalman_dict = {}
+#     print(data_points.keys())
+#     for key in data_points.keys():
+#
+#         kf = KalmanFilter(process_noise, measurement_noise)
+#         """
+#         create a new KF for each power factor
+#         get all the rssi values, then create a similar structured
+#         to data_array dict
+#         
+#         data_points = {powLevel: [kf_rssi], [variance]}
+#
+#         """
+#         raw_array = list(data_points[key][0])
+#         print(raw_array)
+#         for i in range(len(raw_array)):
+#             if key in kalman_dict:
+#
+#                 print("i val :", i, "compared to", len(raw_array))
+#                 kalman_dict[key][0].append(kf.filter(raw_array[i]))
+#                 kalman_dict[key][1].append(kf.get_cov())
+#             else:
+#                 kalman_dict[key] = [[],[]]
+#                 kalman_dict[key][0].append(kf.filter(raw_array[i]))
+#                 kalman_dict[key][1].append(kf.get_cov())
+#         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
+#
 def kalman_filter(data_points, process_noise, measurement_noise):
-    
-    # filtering portion takes data from collection, and applies filter
-    # RSSI measurement with the lowest var, is the RSSI value used for heading
-    
     kalman_dict = {}
     print(data_points.keys())
     for key in data_points.keys():
-
         kf = KalmanFilter(process_noise, measurement_noise)
-        """
-        create a new KF for each power factor
-        get all the rssi values, then create a similar structured
-        to data_array dict
-        
-        data_points = {powLevel: [kf_rssi], [variance]}
-
-        """
         raw_array = list(data_points[key][0])
         print(raw_array)
+        if key not in kalman_dict:
+            kalman_dict[key] = [[],[]]  # Ensure this is set before the loop starts
         for i in range(len(raw_array)):
-            if key in kalman_dict:
-
-                print("i val :", i, "compared to", len(raw_array))
-                kalman_dict[key][0].append(kf.filter(raw_array[i]))
-                kalman_dict[key][1].append(kf.get_cov())
-            else:
-                kalman_dict[key] = [[],[]]
-                kalman_dict[key][0].append(kf.filter(raw_array[i]))
-                kalman_dict[key][1].append(kf.get_cov())
+            kalman_dict[key][0].append(kf.filter(raw_array[i]))
+            kalman_dict[key][1].append(kf.get_cov())
         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
-
-    return data_points, kalman_dict
+    return data_points, kalman_dict   return data_points, kalman_dict
     """
     old code
      
@@ -131,8 +144,8 @@ def simpleCSV(data_dict, kalman_dict):
             else: 
                 key = "powLevel{}".format(i)
                 powLevel = key
-            kf_list = kalman_dict[key][0]
-            var_list = kalman_dict[key][1]
+            kf_list = list(kalman_dict[key][0])
+            var_list = list(kalman_dict[key][1])
             print("kf", kf_list, "var", var_list)
             for dataCounter in range(len(data_dict[key][1])):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
