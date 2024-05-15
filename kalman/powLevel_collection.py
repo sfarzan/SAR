@@ -13,7 +13,7 @@ DATA_ARRAY_SIZE = 2 # num samples per powLevel
 NUM_POW_LEVELS = 16 #0-14 db scale from receiver
 
 
-CSV_FILEPATH = 'test3.csv'
+CSV_FILEPATH = 'test4.csv'
 
 def collection():
     """"
@@ -131,16 +131,15 @@ def simpleCSV(data_dict, kalman_dict):
             else: 
                 key = "powLevel{}".format(i)
                 powLevel = key
+            kf_list = kalman_dict[key][0]
+            var_list = kalman_dict[key][1]
+            print("kf", kf_list, "var", var_list)
             for dataCounter in range(len(data_dict[key][1])):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
-                if isinstance(kalman_dict[key], tuple):  # Check if kalman_dict[key] is a tuple
-                    kf = kalman_dict[key][0][dataCounter] 
-                    var = kalman_dict[key][1][dataCounter]
-                else:  # If kalman_dict[key] is a dictionary
-                    kf = kalman_dict[key]['filtered_values'][dataCounter] 
-                    var = kalman_dict[key]['covariance_values'][dataCounter]
+                kf = kf_list[dataCounter]
+                var = var_list[dataCounter]
                 writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal, 'KF': kf, 'VAR': var})
 
 def write_to_csv(original_data, kalman_dict):
