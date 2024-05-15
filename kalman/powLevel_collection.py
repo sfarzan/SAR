@@ -113,7 +113,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
             kalman_dict[key][1].append(kf.get_cov())
         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
         print("Type of kalman_dict[{}]: {}".format(key, type(kalman_dict[key])))
-    return data_points, kalman_dict   
+    return kalman_dict   
     """
     old code
      
