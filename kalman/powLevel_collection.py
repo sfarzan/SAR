@@ -135,11 +135,14 @@ def simpleCSV(data_dict, kalman_dict):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
-                kf = kalman_dict[key][0][dataCounter] 
-                var = kalman_dict[key][1][dataCounter]
+                if isinstance(kalman_dict[key], tuple):  # Check if kalman_dict[key] is a tuple
+                    kf = kalman_dict[key][0][dataCounter] 
+                    var = kalman_dict[key][1][dataCounter]
+                else:  # If kalman_dict[key] is a dictionary
+                    kf = kalman_dict[key]['filtered_values'][dataCounter] 
+                    var = kalman_dict[key]['covariance_values'][dataCounter]
                 writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal, 'KF': kf, 'VAR': var})
 
-                
 def write_to_csv(original_data, kalman_dict):
     with open(CSV_FILEPATH, 'w', newline='') as csvfile:
         fieldnames = ['Time', 'Pow Level', 'Original Value', 'KF value', 'Variance']
