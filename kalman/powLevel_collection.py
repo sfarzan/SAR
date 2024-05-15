@@ -102,6 +102,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
     kalman_dict = {}
     print(data_points.keys())
     for key in data_points.keys():
+        pri
         kf = KalmanFilter(process_noise, measurement_noise)
         raw_array = list(data_points[key][0])
         print(raw_array)
@@ -111,7 +112,7 @@ def kalman_filter(data_points, process_noise, measurement_noise):
             kalman_dict[key][0].append(kf.filter(raw_array[i]))
             kalman_dict[key][1].append(kf.get_cov())
         print("Data Points\n", data_points, "Kalman dict", kalman_dict)
-    return data_points, kalman_dict   return data_points, kalman_dict
+    return data_points, kalman_dict   
     """
     old code
      
@@ -151,8 +152,10 @@ def simpleCSV(data_dict, kalman_dict):
                 print("counter :", dataCounter, "threshold", DATA_ARRAY_SIZE -1)
                 rssiVal = data_dict[key][0][dataCounter]
                 timeStamp = data_dict[key][1][dataCounter]
-                kf = kf_list[dataCounter]
-                var = var_list[dataCounter]
+                kf = kalman_dict[key][0][dataCounter]
+                var = kalman_dict[key][0][dataCounter]
+                # kf = kf_list[dataCounter]
+                # var = var_list[dataCounter]
                 writer.writerow({'timeStamp': timeStamp, 'powLevel': powLevel, 'rssi': rssiVal, 'KF': kf, 'VAR': var})
 
 def write_to_csv(original_data, kalman_dict):
