@@ -1,8 +1,0 @@
-# Ignore mavsdk binary
-/mavsdk_server
-/1.hwID
-/2.hwID
-/3.hwID
-/4.hwID
-/online_config.csv
-__pycache__/
